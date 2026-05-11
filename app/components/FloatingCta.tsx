@@ -14,7 +14,7 @@ export default function FloatingCta() {
 
   return (
     <a
-      href="https://calendly.com/mkt-lasso/lasso"
+      href="https://lassomkt.app.n8n.cloud/form-test/8dea02b9-5556-4481-aa20-07e39f72a257"
       aria-label="Agendar demo"
       className={`fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 rounded-full bg-brand-500 px-5 py-3.5 text-sm font-bold text-white shadow-2xl shadow-brand-500/30 transition-all duration-300 hover:bg-brand-600 hover:scale-105 ${
         show ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0 pointer-events-none"
