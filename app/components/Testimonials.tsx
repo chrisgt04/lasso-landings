@@ -21,10 +21,10 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="bg-brand-50/50 py-16 md:py-20">
+    <section className="bg-navy-900 py-16 md:py-20">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-navy-900 md:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">
             Lo que dicen <span className="text-brand-500">nuestros clientes</span>
           </h2>
         </div>
@@ -33,7 +33,7 @@ export default function Testimonials() {
           {testimonials.map((t) => (
             <figure
               key={t.name}
-              className="flex flex-col rounded-2xl border border-brand-100 bg-white p-8 shadow-sm"
+              className="flex flex-col rounded-2xl border border-slate-700 bg-slate-800 p-8"
             >
               <div className="flex gap-0.5 text-brand-500">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -42,7 +42,7 @@ export default function Testimonials() {
                   </svg>
                 ))}
               </div>
-              <blockquote className="mt-4 flex-1 text-base text-navy-900">
+              <blockquote className="mt-4 flex-1 text-base text-white">
                 &ldquo;{t.quote}&rdquo;
               </blockquote>
               <figcaption className="mt-6 flex items-center gap-3">
@@ -50,8 +50,8 @@ export default function Testimonials() {
                   {t.initials}
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-navy-900">{t.name}</div>
-                  <div className="text-xs text-navy-900/60">{t.role}</div>
+                  <div className="text-sm font-semibold text-white">{t.name}</div>
+                  <div className="text-xs text-slate-400">{t.role}</div>
                 </div>
               </figcaption>
             </figure>

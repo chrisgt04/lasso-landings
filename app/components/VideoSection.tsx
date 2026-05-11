@@ -54,7 +54,7 @@ export default function VideoSection({ videoId, videoUrl, isShort }: Props) {
 
           <div className="mt-8 flex justify-center">
             <a
-              href="#demo"
+              href="https://calendly.com/mkt-lasso/lasso"
               className="inline-flex items-center gap-2 rounded-full bg-brand-500 px-8 py-4 text-base font-bold text-white shadow-lg shadow-brand-500/25 transition hover:bg-brand-600"
             >
               Agendar demo

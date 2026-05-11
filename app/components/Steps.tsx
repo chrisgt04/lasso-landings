@@ -7,7 +7,7 @@ const steps = [
 
 export default function Steps() {
   return (
-    <section className="bg-brand-50/50 py-16 md:py-20">
+    <section className="bg-white py-16 md:py-20">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-navy-900 md:text-4xl">
@@ -32,7 +32,7 @@ export default function Steps() {
 
         <div className="mt-10 flex justify-center">
           <a
-            href="#demo"
+            href="https://calendly.com/mkt-lasso/lasso"
             className="inline-flex items-center gap-2 rounded-full bg-brand-500 px-8 py-4 text-base font-bold text-white shadow-lg shadow-brand-500/25 transition hover:bg-brand-600"
           >
             Agendar demo
