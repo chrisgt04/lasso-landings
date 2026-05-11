@@ -54,22 +54,16 @@ export default function Hero() {
               Conecta. Retén. Crece.
             </p>
 
-            {/* CTAs duales */}
+            {/* CTA principal */}
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
               <a
-                href="#cta"
-                className="w-full rounded-full bg-brand-500 px-8 py-4 text-base font-semibold text-white shadow-xl shadow-brand-500/30 transition hover:bg-brand-600 sm:w-auto"
-              >
-                Comienza Gratis
-              </a>
-              <a
                 href="https://calendly.com/mkt-lasso/lasso"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-slate-600 bg-transparent px-8 py-4 text-base font-semibold text-white transition hover:bg-white/5 sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-500 px-8 py-4 text-base font-semibold text-white shadow-xl shadow-brand-500/30 transition hover:bg-brand-600 sm:w-auto"
               >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                Agenda una demo
+                Agendar demo
               </a>
             </div>
 
