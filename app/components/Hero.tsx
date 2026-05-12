@@ -34,7 +34,7 @@ export default function Hero() {
                 fontWeight: 800,
               }}
             >
-              La plataforma de <span className="text-orange-500">lealtad</span> que convierte tus clientes en ingresos recurrentes.
+              La plataforma de <span className="text-orange-500">lealtad</span> que convierte tus clientes en <span className="text-orange-500">ingresos</span> recurrentes.
             </h1>
 
             <p
