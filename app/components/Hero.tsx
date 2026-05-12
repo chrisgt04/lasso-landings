@@ -57,7 +57,7 @@ export default function Hero() {
             {/* CTA principal */}
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
               <a
-                href="https://lassomkt.app.n8n.cloud/form-test/8dea02b9-5556-4481-aa20-07e39f72a257"
+                href="https://lassomkt.app.n8n.cloud/form/8dea02b9-5556-4481-aa20-07e39f72a257"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-500 px-8 py-4 text-base font-semibold text-white shadow-xl shadow-brand-500/30 transition hover:bg-brand-600 sm:w-auto"
               >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

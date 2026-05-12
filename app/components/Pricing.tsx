@@ -167,7 +167,7 @@ export default function Pricing() {
                 </ul>
 
                 <a
-                  href="https://lassomkt.app.n8n.cloud/form-test/8dea02b9-5556-4481-aa20-07e39f72a257"
+                  href="https://lassomkt.app.n8n.cloud/form/8dea02b9-5556-4481-aa20-07e39f72a257"
                   className={`mt-8 block rounded-full px-6 py-4 text-center text-base font-semibold transition ${
                     isHi
                       ? "bg-white text-brand-500 hover:bg-slate-100"

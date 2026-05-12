@@ -16,7 +16,7 @@ export default function FinalCta() {
 
         <div className="mt-8 flex justify-center">
           <a
-            href="https://lassomkt.app.n8n.cloud/form-test/8dea02b9-5556-4481-aa20-07e39f72a257"
+            href="https://lassomkt.app.n8n.cloud/form/8dea02b9-5556-4481-aa20-07e39f72a257"
             className="inline-flex items-center gap-2 rounded-full bg-brand-500 px-10 py-4 text-base font-bold text-white shadow-2xl shadow-brand-500/40 transition hover:bg-brand-600 hover:scale-105"
           >
             Agendar demo

@@ -200,7 +200,7 @@ export default function Industries() {
       <p className="mt-12 text-center text-sm text-white/35">
         ¿No ves tu industria?{" "}
         <a
-          href="https://lassomkt.app.n8n.cloud/form-test/8dea02b9-5556-4481-aa20-07e39f72a257"
+          href="https://lassomkt.app.n8n.cloud/form/8dea02b9-5556-4481-aa20-07e39f72a257"
           className="font-semibold text-brand-500 underline underline-offset-2 hover:text-brand-400"
         >
           Agenda una demo

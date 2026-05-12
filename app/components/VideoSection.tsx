@@ -54,7 +54,7 @@ export default function VideoSection({ videoId, videoUrl, isShort }: Props) {
 
           <div className="mt-8 flex justify-center">
             <a
-              href="https://lassomkt.app.n8n.cloud/form-test/8dea02b9-5556-4481-aa20-07e39f72a257"
+              href="https://lassomkt.app.n8n.cloud/form/8dea02b9-5556-4481-aa20-07e39f72a257"
               className="inline-flex items-center gap-2 rounded-full bg-brand-500 px-8 py-4 text-base font-bold text-white shadow-lg shadow-brand-500/25 transition hover:bg-brand-600"
             >
               Agendar demo
