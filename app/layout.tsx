@@ -53,6 +53,42 @@ export default function RootLayout({
             alt=""
           />
         </noscript>
+
+        {/* Propaga fbclid, _fbp y UTMs a todos los CTAs del formulario */}
+        <Script id="fbclid-propagator" strategy="afterInteractive">{`
+          (function() {
+            function getCookie(name) {
+              const v = '; ' + document.cookie;
+              const parts = v.split('; ' + name + '=');
+              return parts.length === 2 ? parts.pop().split(';').shift() : null;
+            }
+            function getParam(name) {
+              return new URLSearchParams(window.location.search).get(name);
+            }
+            setTimeout(function() {
+              const fbclid     = getParam('fbclid');
+              const fbp        = getCookie('_fbp');
+              const utm_source   = getParam('utm_source')   || '';
+              const utm_campaign = getParam('utm_campaign') || '';
+              const utm_medium   = getParam('utm_medium')   || '';
+              const utm_content  = getParam('utm_content')  || '';
+              const utm_term     = getParam('utm_term')     || '';
+
+              document.querySelectorAll('a[href*="lassomkt.app.n8n.cloud/form"]')
+                .forEach(function(cta) {
+                  const url = new URL(cta.href);
+                  if (fbclid)       url.searchParams.set('fbclid',       fbclid);
+                  if (fbp)          url.searchParams.set('fbp',          fbp);
+                  if (utm_source)   url.searchParams.set('utm_source',   utm_source);
+                  if (utm_campaign) url.searchParams.set('utm_campaign', utm_campaign);
+                  if (utm_medium)   url.searchParams.set('utm_medium',   utm_medium);
+                  if (utm_content)  url.searchParams.set('utm_content',  utm_content);
+                  if (utm_term)     url.searchParams.set('utm_term',     utm_term);
+                  cta.href = url.toString();
+                });
+            }, 500);
+          })();
+        `}</Script>
       </body>
     </html>
   );
