@@ -98,10 +98,19 @@ export default function Hero() {
               ) : (
                 <button
                   onClick={() => setPlaying(true)}
-                  className="group absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-500 via-brand-600 to-navy-900 transition"
+                  className="group absolute inset-0 flex items-center justify-center transition"
                   aria-label="Reproducir video"
                 >
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.18),transparent_55%)]" />
+                  {/* Imagen de portada */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/video-cover.png"
+                    alt="Vista previa del video Lasso"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                  {/* Overlay oscuro sutil para que el botón resalte */}
+                  <div className="absolute inset-0 bg-black/25" />
+                  {/* Botón play */}
                   <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-white/95 shadow-xl transition group-hover:scale-110">
                     <svg className="ml-1 h-8 w-8 text-brand-600" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M8 5v14l11-7z" />
