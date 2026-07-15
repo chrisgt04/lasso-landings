@@ -13,6 +13,15 @@ export default async function Gracias({ searchParams }: { searchParams: Promise<
     return <Shell title="Falta la referencia del pago">No recibimos el identificador de la suscripción. Vuelve a intentar desde el enlace de pago.</Shell>;
   }
 
+  // Modo demo: solo activo con DEMO_MODE=1 (nunca se configura en Vercel).
+  if (process.env.DEMO_MODE === "1" && preapprovalId === "demo") {
+    return (
+      <Shell title="¡Pago confirmado!">
+        <IssueForm preapprovalId="demo" email="demo@knox.mx" />
+      </Shell>
+    );
+  }
+
   let content: React.ReactNode;
   try {
     const pre = await getPreapproval(preapprovalId);

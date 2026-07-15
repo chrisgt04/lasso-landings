@@ -19,6 +19,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Nombre y apellido son obligatorios" }, { status: 400 });
   }
 
+  // Modo demo: solo activo con DEMO_MODE=1 (nunca se configura en Vercel).
+  if (process.env.DEMO_MODE === "1" && preapprovalId === "demo") {
+    try {
+      const card = await issueCard({
+        email: "demo@knox.mx",
+        firstName: body.fName,
+        lastName: body.sName,
+        phone: body.phone,
+      });
+      return NextResponse.json({ ok: true, installURL: card.installURL, installQR: card.installQR });
+    } catch (e) {
+      return NextResponse.json({ error: `Error emitiendo la tarjeta: ${String(e)}` }, { status: 500 });
+    }
+  }
+
   // Candado: re-verificamos el pago contra MP con nuestro token secreto.
   // El email lo tomamos de MP (no del cliente) para mantener integridad.
   let pre;
