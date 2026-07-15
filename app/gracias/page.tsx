@@ -1,5 +1,5 @@
-import { getPreapproval, isPaid } from "@/lib/mp";
-import IssueForm from "./IssueForm";
+import { getPreapproval, getPayerName, isPaid } from "@/lib/mp";
+import { issueCard, type IssuedCard } from "@/lib/lasso";
 
 export const dynamic = "force-dynamic";
 
@@ -15,29 +15,58 @@ export default async function Gracias({ searchParams }: { searchParams: Promise<
 
   // Modo demo: solo activo con DEMO_MODE=1 (nunca se configura en Vercel).
   if (process.env.DEMO_MODE === "1" && preapprovalId === "demo") {
+    try {
+      const card = await issueCard({ email: "demo@knox.mx", firstName: "Demo", lastName: "Knox" });
+      return <Issued card={card} />;
+    } catch {
+      return <RetryShell />;
+    }
+  }
+
+  let pre;
+  try {
+    pre = await getPreapproval(preapprovalId);
+  } catch {
+    return <RetryShell />;
+  }
+  if (!isPaid(pre)) {
     return (
-      <Shell title="¡Pago confirmado!">
-        <IssueForm preapprovalId="demo" email="demo@knox.mx" />
+      <Shell title="Tu pago aún no está confirmado">
+        Estado actual: <b>{pre.status}</b>. En cuanto se confirme podrás descargar tu tarjeta. Si acabas de pagar, recarga en unos segundos.
       </Shell>
     );
   }
+  const email = pre.payer_email || "";
+  if (!email) return <RetryShell />;
 
-  let content: React.ReactNode;
   try {
-    const pre = await getPreapproval(preapprovalId);
-    if (!isPaid(pre)) {
-      content = <Shell title="Tu pago aún no está confirmado">Estado actual: <b>{pre.status}</b>. En cuanto se confirme podrás generar tu tarjeta. Si acabas de pagar, recarga en unos segundos.</Shell>;
-    } else {
-      content = (
-        <Shell title="¡Pago confirmado!">
-          <IssueForm preapprovalId={preapprovalId} email={pre.payer_email || ""} />
-        </Shell>
-      );
-    }
+    const name = await getPayerName(preapprovalId);
+    const card = await issueCard({ email, firstName: name.first, lastName: name.last });
+    return <Issued card={card} />;
   } catch {
-    content = <Shell title="No pudimos verificar tu pago">Intenta de nuevo en unos segundos. Si el problema persiste, guarda tu comprobante y contáctanos.</Shell>;
+    return <RetryShell />;
   }
-  return content;
+}
+
+function Issued({ card }: { card: IssuedCard }) {
+  return (
+    <Shell title="¡Pago confirmado!">
+      <p style={{ marginTop: 0, marginBottom: 16 }}>Tu membresía Knox está lista. Escanea el QR o toca el botón para instalar tu tarjeta:</p>
+      {card.installQR ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={card.installQR} alt="QR de tu tarjeta" width={220} height={220} style={{ margin: "0 auto 20px", display: "block", background: "#fff", borderRadius: 8, padding: 8 }} />
+      ) : null}
+      {card.installURL ? <a className="btn" href={card.installURL}>Instalar en Apple / Google Wallet</a> : null}
+    </Shell>
+  );
+}
+
+function RetryShell() {
+  return (
+    <Shell title="No pudimos verificar tu pago">
+      Intenta de nuevo en unos segundos. Si el problema persiste, guarda tu comprobante y contáctanos.
+    </Shell>
+  );
 }
 
 function Shell({ title, children }: { title: string; children: React.ReactNode }) {
