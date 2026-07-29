@@ -1,62 +1,75 @@
-import { getPreapproval, getPayerName, isPaid } from "@/lib/mp";
-import { issueCard, type IssuedCard } from "@/lib/lasso";
-
 export const dynamic = "force-dynamic";
 
+// La landing NO tiene credenciales: delega en n8n, que verifica el pago en
+// Mercado Pago y emite la tarjeta Lasso. El webhook no es secreto.
+const WEBHOOK =
+  process.env.KNOX_WEBHOOK_URL ||
+  "https://lassomkt.app.n8n.cloud/webhook/knox-mercadopago";
+
 type SP = { [k: string]: string | string[] | undefined };
+type IssueResult = { ok: boolean; installURL?: string; installQR?: string };
+
+async function issueViaN8n(preapprovalId: string): Promise<IssueResult> {
+  const res = await fetch(WEBHOOK, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ preapproval_id: preapprovalId }),
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(`n8n webhook HTTP ${res.status}`);
+  const raw = await res.json();
+  const d = Array.isArray(raw) ? raw[0] : raw;
+  return { ok: !!d?.installURL, installURL: d?.installURL, installQR: d?.installQR };
+}
 
 export default async function Gracias({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
-  const preapprovalId = (Array.isArray(sp.preapproval_id) ? sp.preapproval_id[0] : sp.preapproval_id) || "";
+  const preapprovalId =
+    (Array.isArray(sp.preapproval_id) ? sp.preapproval_id[0] : sp.preapproval_id) || "";
 
   if (!preapprovalId) {
-    return <Shell title="Falta la referencia del pago">No recibimos el identificador de la suscripción. Vuelve a intentar desde el enlace de pago.</Shell>;
-  }
-
-  // Modo demo: solo activo con DEMO_MODE=1 (nunca se configura en Vercel).
-  if (process.env.DEMO_MODE === "1" && preapprovalId === "demo") {
-    try {
-      const card = await issueCard({ email: "demo@knox.mx", firstName: "Demo", lastName: "Knox" });
-      return <Issued card={card} />;
-    } catch {
-      return <RetryShell />;
-    }
-  }
-
-  let pre;
-  try {
-    pre = await getPreapproval(preapprovalId);
-  } catch {
-    return <RetryShell />;
-  }
-  if (!isPaid(pre)) {
     return (
-      <Shell title="Tu pago aún no está confirmado">
-        Estado actual: <b>{pre.status}</b>. En cuanto se confirme podrás descargar tu tarjeta. Si acabas de pagar, recarga en unos segundos.
+      <Shell title="Falta la referencia del pago">
+        No recibimos el identificador de la suscripción. Vuelve a intentar desde el enlace de pago.
       </Shell>
     );
   }
-  const email = pre.payer_email || "";
-  if (!email) return <RetryShell />;
 
+  let card: IssueResult;
   try {
-    const name = await getPayerName(preapprovalId);
-    const card = await issueCard({ email, firstName: name.first, lastName: name.last });
-    return <Issued card={card} />;
+    card = await issueViaN8n(preapprovalId);
   } catch {
     return <RetryShell />;
   }
+
+  if (!card.ok || !card.installURL) {
+    return (
+      <Shell title="Tu pago aún no está confirmado">
+        En cuanto se confirme tu suscripción podrás descargar tu tarjeta. Si acabas de pagar, recarga en unos segundos.
+      </Shell>
+    );
+  }
+
+  return <Issued installURL={card.installURL} installQR={card.installQR} />;
 }
 
-function Issued({ card }: { card: IssuedCard }) {
+function Issued({ installURL, installQR }: { installURL: string; installQR?: string }) {
   return (
     <Shell title="¡Pago confirmado!">
-      <p style={{ marginTop: 0, marginBottom: 16 }}>Tu membresía Knox está lista. Escanea el QR o toca el botón para instalar tu tarjeta:</p>
-      {card.installQR ? (
+      <p style={{ marginTop: 0, marginBottom: 16 }}>
+        Tu membresía Knox está lista. Escanea el QR o toca el botón para instalar tu tarjeta:
+      </p>
+      {installQR ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={card.installQR} alt="QR de tu tarjeta" width={220} height={220} style={{ margin: "0 auto 20px", display: "block", background: "#fff", borderRadius: 8, padding: 8 }} />
+        <img
+          src={installQR}
+          alt="QR de tu tarjeta"
+          width={220}
+          height={220}
+          style={{ margin: "0 auto 20px", display: "block", background: "#fff", borderRadius: 8, padding: 8 }}
+        />
       ) : null}
-      {card.installURL ? <a className="btn" href={card.installURL}>Instalar en Apple / Google Wallet</a> : null}
+      <a className="btn" href={installURL}>Instalar en Apple / Google Wallet</a>
     </Shell>
   );
 }
